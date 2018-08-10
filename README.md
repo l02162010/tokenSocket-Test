@@ -1,4 +1,10 @@
-# mic-project
+# mic-project（練習token與socket）
+
+## 登入資訊
+```
+account: test
+password: 123456
+```
 
 ## Project setup
 ```
