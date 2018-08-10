@@ -3,7 +3,9 @@ import ApiInstance from '../../cfg/api'
 
 export default {
   state: {
-    token: {
+    isRefresh: false,
+    isLogin: false,
+    token : {
       accessToken:"",
       refreshToken:""
     }
@@ -13,16 +15,18 @@ export default {
   },
   mutations: {
     updateToken(state, token){
-      
       if(token.accessToken){
         localStorage.setItem('accessToken', token.accessToken);
         state.token.accessToken = token.accessToken
-        ApiInstance.defaults.headers.common['Authorization'] = "Bearer " + token.accessToken;
       }
       if(token.refreshToken){
         localStorage.setItem('refreshToken', token.refreshToken);
         state.token.refreshToken = token.refreshToken
-      }      
+      }
+      state.isRefresh = false
+      state.isLogin = true
+      localStorage.setItem('isLogin', true);
+      // localStorage.setItem('isRefresh', false);
     },
     initialiseStore(state) {
 			if(localStorage.getItem('accessToken')) {
@@ -31,11 +35,24 @@ export default {
       if(localStorage.getItem('refreshToken')) {
         state.token.refreshToken = localStorage.getItem('refreshToken')
       }
-		}
+      if(typeof localStorage.getItem('isLogin') == 'string'){
+        state.isLogin = !!localStorage.getItem('isLogin')
+      }
+    },
+    doRefresh(state) {
+      state.isRefresh = true
+    },
+    logout(state) {
+      localStorage.setItem('isLogin', false);
+      state.isLogin = false
+    }
   },
   actions: {
     doLogin: async (store, data) => await apiInit(store, "post", "auth/rest/token", data),
-    refreshToken: async (store, data) => await apiInit(store, "post", "auth/rest/token/refresh", data),
+    refreshToken: async (store, data) => {
+      store.commit('doRefresh')
+      await apiInit(store, "post", "auth/rest/token/refresh", data)
+    },
     getDeviceId: async (store) => await apiInit(store, "get", "api/rest/device/e50d6085-2aba-48e9-b1c3-73c673e414be"),
   }
 }

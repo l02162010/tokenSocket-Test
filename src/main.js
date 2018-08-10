@@ -12,7 +12,7 @@ Vue.use(ElementUI);
 // request 攔截 
 ApiInstance.interceptors.request.use(
   req => {
-    if (store.state.api.token.accessToken) {
+    if (store.state.api.token.accessToken && store.state.api.isLogin) {
       req.headers.Authorization = `Bearer ${store.state.api.token.accessToken}`
     }
     return req
@@ -29,21 +29,39 @@ ApiInstance.interceptors.response.use(
   },
   error => {
     if (error.response) {
+    
       switch (error.response.status) {
         case 401:
-        if(error.response.statusText != "Unauthorized"){
-          store.dispatch('refreshToken')
-        }else{
-          localStorage.clear();
-        }
-        //TODO 轉跳登入頁
+          if(store.state.api.isLogin){
+            if(!store.state.api.isRefresh){
+              let data = {
+                refreshToken : store.state.api.token.refreshToken
+              }
+              store.dispatch('refreshToken', data)
+            }else{
+              store.commit('logout')
+              goHome()
+            }
+          }else{
+            goHome()
+          }
+          break;
+        case 500:
+          goHome()
+          break;
       }
     }
     // console.log(JSON.stringify(error));//console : Error: Request failed with status code 402
     return Promise.reject(error.response)
   }
 )
-
+let goHome = ()=> {
+  localStorage.clear();
+  router.currentRoute.path !== '/' &&
+  router.replace({
+    path: '/'
+  })
+}
 new Vue({
   router,
   store,

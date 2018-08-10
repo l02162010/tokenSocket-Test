@@ -63,8 +63,8 @@ export default {
   },
   async mounted(){
     await this.getDeviceIdfn()
-    await this.doRefreshToken()
-    await this.doWebSocket()
+    // await this.doRefreshToken()
+    this.doWebSocket()
   },
   methods:{
     ...mapActions([
