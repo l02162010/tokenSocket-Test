@@ -11,8 +11,10 @@ let interceptors = function(){
   // request 攔截 
   ApiInstance.interceptors.request.use(
     req => {
-      if (store.state.api.token.accessToken && store.state.api.isLogin) {
-        req.headers.Authorization = `Bearer ${store.state.api.token.accessToken}`
+      if(req.baseURL+'/'+req.url != REFRESH_TOKEN_URL){
+        if (store.state.api.token.accessToken && store.state.api.isLogin) {
+          req.headers.Authorization = `Bearer ${store.state.api.token.accessToken}`
+        }
       }
       return req
     },
@@ -26,6 +28,10 @@ let interceptors = function(){
     response => {
         if(response.config.url == REFRESH_TOKEN_URL){
           store.commit('updateToken', response.data);
+          //TODO 把這寫出去
+          if(router.currentRoute.path == '/about'){
+            store.dispatch('getDeviceId');
+          }
         }
       return response
     },
@@ -38,6 +44,7 @@ let interceptors = function(){
               refreshToken : api_store.token.refreshToken
             }
             store.dispatch('refreshToken', data)
+            return null
           }else{
             goHome()
           }

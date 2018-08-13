@@ -8,26 +8,6 @@
       </el-col>
       <el-col :xs="24" :sm="24" :md="24" :lg="13" :xl="13">
         <div class="grid-content bg-purple-light">
-         <!-- <table class="deviceTable">
-          <tr>
-              <th>id</th>
-              <th>name</th>
-              <th>data</th>
-              <th>networkId</th>
-              <th>deviceTypeId</th>
-              <th>isBlocked</th>
-            </tr>
-            <tr>
-              <td>{{device.id}}</td>
-              <td>{{device.name}}</td>
-              <td>
-                <div v-for="(d,i) in device.data">{{d}}</div>
-              </td>
-              <td>{{device.networkId}}</td>
-              <td>{{device.deviceTypeId}}</td>
-              <td>{{device.isBlocked}}</td>
-            </tr>
-          </table> -->
           <table>
             <thead>
               <tr>
@@ -58,7 +38,6 @@
 </template>
 <script>
 import {mapActions, mapGetters, mapMutations} from 'vuex'
-// import Chart from 'chart.js';
 import planetChartData from '../cfg/chartData.js'
 import chartLine from '../components/chartLine.vue'
 
@@ -84,11 +63,11 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'token',
-    ])
+      'token'
+    ]),
   },
   async mounted(){
-    await this.getDeviceIdfn()
+    if(this.token.accessToken) await this.getDeviceIdfn()
     // await this.doRefreshToken()
     this.doWebSocket()
   },
