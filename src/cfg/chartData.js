@@ -28,7 +28,7 @@ export const planetChartData = {
       ]
     },
     options: {
-      responsive: false,
+      responsive: true,
       lineTension: 1,
       animation : false,
       scales: {

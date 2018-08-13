@@ -1,32 +1,58 @@
 <template>
   <div class="about">
-    <el-row>
-      <el-col :xs="11" :sm="11" :md="11" :lg="11" :xl="11">
-        <chartLine :chart-data="chartData" :options="chartOptions" :width="600" :height="400"></chartLine>
+    <el-row :gutter="10">
+      <el-col :xs="24" :sm="24" :md="24" :lg="11" :xl="11">
+        <div class="grid-content bg-purple">
+          <chartLine :chart-data="chartData" :options="chartOptions"></chartLine>
+        </div>
       </el-col>
-      <el-col :xs="13" :sm="13" :md="13" :lg="13" :xl="13">
-        <table class="deviceTable">
+      <el-col :xs="24" :sm="24" :md="24" :lg="13" :xl="13">
+        <div class="grid-content bg-purple-light">
+         <!-- <table class="deviceTable">
           <tr>
-            <th>id</th>
-            <th>name</th>
-            <th>data</th>
-            <th>networkId</th>
-            <th>deviceTypeId</th>
-            <th>isBlocked</th>
-          </tr>
-          <tr>
-            <td>{{device.id}}</td>
-            <td>{{device.name}}</td>
-            <td>
-              <div v-for="(d,i) in device.data">{{d}}</div>
-            </td>
-            <td>{{device.networkId}}</td>
-            <td>{{device.deviceTypeId}}</td>
-            <td>{{device.isBlocked}}</td>
-          </tr>
-        </table>
+              <th>id</th>
+              <th>name</th>
+              <th>data</th>
+              <th>networkId</th>
+              <th>deviceTypeId</th>
+              <th>isBlocked</th>
+            </tr>
+            <tr>
+              <td>{{device.id}}</td>
+              <td>{{device.name}}</td>
+              <td>
+                <div v-for="(d,i) in device.data">{{d}}</div>
+              </td>
+              <td>{{device.networkId}}</td>
+              <td>{{device.deviceTypeId}}</td>
+              <td>{{device.isBlocked}}</td>
+            </tr>
+          </table> -->
+          <table>
+            <thead>
+              <tr>
+                <th>id</th>
+                <th>name</th>
+                <th>data</th>
+                <th>networkId</th>
+                <th>deviceTypeId</th>
+                <th>isBlocked</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-title="id">{{device.id}}</td>
+                <td data-title="name">{{device.name}}</td>
+                <td data-title="data"><span v-for="(d,i) in device.data">{{d}}</span></td>
+                <td data-title="networkId">{{device.networkId}}</td>
+                <td data-title="deviceTypeId">{{device.deviceTypeId}}</td>
+                <td data-title="isBlocked">{{device.isBlocked}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </el-col>
-      
+     
     </el-row>
   </div>
 </template>
@@ -140,16 +166,49 @@ table {
     width: 100%;
 }
 
-td, th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-}
-
 tr:nth-child(even) {
     background-color: #dddddd;
 }
 .deviceTable{
   margin-top: 32px;
 }
+table, th, td {
+  border: 1px solid #aaa;
+  border-collapse: collapse;
+  text-align: left;
+  padding: 3px 5px;
+}
+
+table {
+  width: 95%;
+  margin: 1em auto;
+}
+
+th {
+  background: #c4d3da;
+}
+tr:nth-child(even) {
+  background: rgba(108, 255, 209, 0.2);
+}
+
+@media only screen and (max-width: 768px) {
+  thead {
+    display: none;
+  }
+
+  td {
+    display: block;
+    padding: 0.3rem 0.5rem;
+  }
+
+  td:before {
+    content: attr(data-title);
+    display: inline-block;
+    width: auto;
+    min-width: 20%;
+    font-weight: 900;
+    padding-right: 1rem;
+  }
+}
+
 </style>

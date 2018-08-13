@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-var config = {
+export var config = {
   baseURL: `http://test.comismart.com`,
   timeout: 60 * 1000,
   headers: {
@@ -13,6 +13,4 @@ var config = {
   defaultInterceptors: true
 }
 
-const ApiInstance =  axios.create(config);
-
-export default ApiInstance;
+export const ApiInstance =  axios.create(config);

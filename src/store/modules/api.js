@@ -1,5 +1,5 @@
 import qs from 'query-string'
-import ApiInstance from '../../cfg/api'
+import {ApiInstance} from '../../cfg/api'
 
 export default {
   state: {
@@ -26,7 +26,7 @@ export default {
       state.isRefresh = false
       state.isLogin = true
       localStorage.setItem('isLogin', true);
-      // localStorage.setItem('isRefresh', false);
+      localStorage.setItem('isRefresh', false);
     },
     initialiseStore(state) {
 			if(localStorage.getItem('accessToken')) {
@@ -38,8 +38,12 @@ export default {
       if(typeof localStorage.getItem('isLogin') == 'string'){
         state.isLogin = !!localStorage.getItem('isLogin')
       }
+      if(typeof localStorage.getItem('isRefresh') == 'string'){
+        state.isLogin = !!localStorage.getItem('isRefresh')
+      }
     },
     doRefresh(state) {
+      localStorage.setItem('isRefresh', true);
       state.isRefresh = true
     },
     logout(state) {
