@@ -61,15 +61,23 @@ export default {
       chartOptions: planetChartData.options,
     }
   },
+  async mounted(){
+    if(this.token.accessToken) await this.getDeviceIdfn()
+    // await this.doRefreshToken()
+    this.doWebSocket()
+  },
   computed: {
     ...mapGetters([
       'token'
     ]),
   },
-  async mounted(){
-    if(this.token.accessToken) await this.getDeviceIdfn()
-    // await this.doRefreshToken()
-    this.doWebSocket()
+  watch: {
+    'token': {
+      deep: true,
+      handler (value) {
+        if(value.accessToken) this.getDeviceIdfn()
+      }
+    }
   },
   methods:{
     ...mapActions([

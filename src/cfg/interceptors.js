@@ -28,10 +28,6 @@ let interceptors = function(){
     response => {
         if(response.config.url == REFRESH_TOKEN_URL){
           store.commit('updateToken', response.data);
-          //TODO 把這寫出去
-          if(router.currentRoute.path == '/about'){
-            store.dispatch('getDeviceId');
-          }
         }
       return response
     },
